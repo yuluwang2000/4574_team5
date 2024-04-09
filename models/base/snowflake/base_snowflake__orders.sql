@@ -1,0 +1,18 @@
+SELECT
+    o.CLIENT_NAME, 
+    o.ORDER_ID,
+    o.ORDER_AT AS ORDER_AT_TS,
+    o.PAYMENT_INFO,
+    o.PAYMENT_METHOD,
+    o.PHONE,
+    o.SESSION_ID,
+    o.SHIPPING_ADDRESS,
+    CAST(SUBSTR(o.SHIPPING_COST,4) AS INT) AS ORDERS,
+    o.STATE AS STATE_NAME,
+    o.TAX_RATE,
+    o._FIVETRAN_DELETED,
+    o._FIVETRAN_ID,
+    o._FIVETRAN_SYNCED AS _FIVETRAN_SYNCED_TS,
+    s.ISO_CODE
+FROM {{ source('snowflake','orders') }} o
+LEFT JOIN {{ source('public','STATE_ISO_CODES') }} s ON o.STATE = s.STATE_NAME
