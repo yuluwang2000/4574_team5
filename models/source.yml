@@ -8,3 +8,8 @@ sources:
       - name: hr_quits
       - name: hr_joins
       - name: expenses
+  - name: snowflake
+    database: LOAD
+    schema: SNOWFLAKE_DB_WEB_SCHEMA
+    tables:
+      - name: page_views
