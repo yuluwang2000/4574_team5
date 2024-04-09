@@ -14,5 +14,9 @@ sources:
     schema: SNOWFLAKE_DB_WEB_SCHEMA
     tables:
       - name: page_views
-      - name: orders
+
+      - name: sessions
+
+
+
 
