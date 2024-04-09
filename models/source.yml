@@ -14,8 +14,14 @@ sources:
     schema: SNOWFLAKE_DB_WEB_SCHEMA
     tables:
       - name: page_views
-
       - name: sessions
+      - name: orders
+  - name: public
+    database: LOAD
+    schema: PUBLIC
+    tables:
+      - name: STATE_ISO_CODES
+
 
 
 
