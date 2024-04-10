@@ -16,6 +16,7 @@ sources:
       - name: page_views
       - name: sessions
       - name: orders
+      - name: item_views
   - name: public
     database: LOAD
     schema: PUBLIC
