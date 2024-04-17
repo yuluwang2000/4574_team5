@@ -1,3 +1,38 @@
+WITH table1 AS(
+SELECT ITEM_NAME
+       ,PRICE_PER_UNIT
+FROM {{ source('snowflake','item_views')}}
+GROUP BY 1,2
+),
+table2 AS(
+SELECT ITEM_NAME
+      ,PRICE_PER_UNIT
+      ,ROW_NUMBER() OVER(PARTITION BY ITEM_NAME ORDER BY PRICE_PER_UNIT) ra
+FROM table1
+),
+table3 AS(
+SELECT *
+FROM (
+SELECT ITEM_NAME AS ITEM_NAME_0
+       ,CONCAT(ITEM_NAME,'_size1') AS ITEM_NAME
+       ,PRICE_PER_UNIT
+FROM table2
+WHERE ra = 1
+UNION 
+SELECT ITEM_NAME AS ITEM_NAME_0
+       ,CONCAT(ITEM_NAME,'_size2') AS ITEM_NAME
+       ,PRICE_PER_UNIT
+FROM table2
+WHERE ra = 2
+UNION 
+SELECT ITEM_NAME AS ITEM_NAME_0
+       ,CONCAT(ITEM_NAME,'_size3') AS ITEM_NAME
+       ,PRICE_PER_UNIT
+FROM table2
+WHERE ra = 3
+)
+ORDER BY 1
+)
 SELECT
     _FIVETRAN_ID,
     _FIVETRAN_DELETED,
@@ -6,7 +41,10 @@ SELECT
     ITEM_VIEW_AT AS ITEM_VIEW_AT_TS,
     ADD_TO_CART_QUANTITY,
     REMOVE_FROM_CART_QUANTITY,
-    ITEM_NAME,
-    PRICE_PER_UNIT,
-    CONCAT(ITEM_NAME, '_', PRICE_PER_UNIT) AS ITEM  
-FROM {{ source('snowflake','item_views')}}
+    t3.ITEM_NAME,
+    i1.PRICE_PER_UNIT
+FROM {{ source('snowflake','item_views')}} AS i1
+LEFT JOIN table3 AS t3
+ON t3.ITEM_NAME_0 = i1.ITEM_NAME AND t3.PRICE_PER_UNIT = i1.PRICE_PER_UNIT
+
+--{{ source('snowflake','item_views')}}
