@@ -1,0 +1,155 @@
+version: 2
+
+models:
+  - name: dim_client
+    description: The client dimenion table. This includes all clients that ever visited the website
+    columns:
+      - name: client_id
+        description: "Unique identifier for the client."
+        tests:
+          - unique
+          - not_null
+      - name: session_id
+        description: "Unique identifier for the session."
+        tests:
+          - unique
+          - not_null
+      - name: client_name
+        description: "Anonymized name of the client."
+        tests:
+          - not_null
+      - name: session_at_ts
+        description: "Timestamp when the session occurred."
+        tests:
+          - not_null
+      - name: phone
+        description: "Anonymized phone number associated with the session."
+        tests:
+          - not_null
+      - name: state_name
+        description: "Name of the state where the client is located."
+        tests:
+          - not_null
+      - name: iso_code
+        description: "ISO code for the state."
+        tests:
+          - not_null
+
+  - name: dim_item
+    description: The item dimension table. This includes all items that ever viewed by clients
+    columns:
+      - name: ITEM_NAME 
+        description: The name of the item
+        tests:
+          - unique
+          - not_null
+      - name: PRICE_PER_UNIT
+        description: The price of the item
+
+  - name: fact_session
+    description: Fact table for all sessions. 
+    columns:
+      - name: SESSION_ID
+        tests:
+          - unique
+          - not_null
+        description: The unique identifier of a session
+      - name: ORDER_ID 
+        description: The identifier of each order placed during this session, concatenated with ',' if multiple orders, or null if none
+      - name: ORDER_NUM
+        description: Number of orders placed in this session
+        tests:
+          - not_null
+      - name: CLIENT_ID 
+        description: The identifier of the client associated with this session
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_client')
+              field: client_id
+      - name: IP
+        description: The IP address from which the session was initiated
+      - name: OS
+        description: The operating system used by the client during the session
+      - name: SESSION_AT_TS
+        description: Timestamp for when the session started
+        tests:
+          - not_null        
+      - name: SESSION_END_TS
+        description: Timestamp for when the session ended. Use the last time of viewing pages and items
+      - name: SHOP_PLANTS_PAGE_COUNT 
+        description: Number of times the shop plants page was viewed during the session\
+        tests:
+          - not_null     
+      - name: CART_PAGE_COUNT
+        description: Number of times the cart page was viewed during the session
+        tests:
+          - not_null     
+      - name: FAQ_PAGE_COUNT
+        description: Number of times the faq page was viewed during the session
+        tests:
+          - not_null     
+      - name: PLANT_CARE_PAGE_COUNT
+        description: Number of times the plant care page was viewed during the session
+        tests:
+          - not_null     
+      - name: LANDING_PAGE_PAGE_COUNT
+        description: Number of times the landing page was viewed during the session
+        tests:
+          - not_null     
+      - name: ITEM_COUNT
+        description: Number of items was viewed during the session
+        tests:
+          - not_null     
+
+  - name: fact_session_page
+    description: This table records each session's interactions with different pages, including the order in which the pages were viewed
+    columns:
+      - name: session_id
+        description: Identifier for the user session
+        tests:
+          - not_null
+      - name: page_name
+        description: Name of the page that was visited during the session
+        tests:
+          - not_null
+      - name: view_at_ts
+        description: Timestamp of when the page was viewed during the session
+        tests:
+          - not_null
+      - name: rank
+        description: The rank or order in which the page was viewed in relation to other page views in the session
+        tests:
+          - not_null
+
+  - name: fact_session_item
+    description: This table logs each item interaction within a session, including views, additions to cart, and removals, along with quantities and the type of action.
+    columns:
+      - name: session_id
+        description: Unique identifier for the user session.
+        tests:
+          - not_null
+      - name: item_name
+        description: Name of the item, including its size variant.
+        tests:
+          - not_null
+      - name: item_view_at_ts
+        description: Timestamp when the item was viewed.
+        tests:
+          - not_null
+      - name: add_to_cart_quantity
+        description: The quantity of the item added to the cart. A zero indicates no addition.
+        tests:
+          - not_null
+      - name: remove_from_cart_quantity
+        description: The quantity of the item removed from the cart. A zero indicates no removal.
+        tests:
+          - not_null
+      - name: quantity
+        description: Current quantity of the item after the action was performed.
+      - name: action_type
+        description: Type of action performed on the item, such as Add or View.
+        tests:
+          - not_null
+          - accepted_values:
+              values: [View, Add, Remove]
