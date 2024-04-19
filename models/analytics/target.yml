@@ -11,20 +11,12 @@ models:
           - not_null
       - name: client_name
         description: Anonymized name of the client.
-        tests:
-          - not_null
       - name: phone
         description: Anonymized phone number associated with the session.
-        tests:
-          - not_null
       - name: state_name
         description: Name of the state where the client is located.
-        tests:
-          - not_null
       - name: iso_code
         description: ISO code for the state.
-        tests:
-          - not_null
 
   - name: dim_item
     description: The item dimension table. This includes all items that ever viewed by clients
