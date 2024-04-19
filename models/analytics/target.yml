@@ -211,6 +211,69 @@ models:
           - not_null
       - name: TOTAL_PRICE
         description: Total cost of purchased items
+
+  - name: fact_orders
+    description: Stores detailed records of customer orders including payment and shipment information
+    columns:
+      - name: ORDER_ID
+        description: Unique identifier for the order
+        tests:
+          - unique
+          - not_null
+      - name: CLIENT_ID
+        description: Identifier for the client who made the order
+        tests:
+          - not_null
+      - name: IS_REFUNDED
+        description: Flag indicating if the order was refunded
+      - name: IS_RETURNED
+        description: Flag indicating if the order was returned
+      - name: ITEMS
+        description: Array of items included in the order
+        tests:
+          - not_null
+      - name: ORDER_AT_TS
+        description: Timestamp of when the order was placed
+        tests:
+          - not_null
+      - name: PAYMENT_INFO
+        description: Encrypted payment information details
+      - name: PAYMENT_METHOD
+        description: Method of payment used for the order
+        tests:
+          - not_null
+      - name: PHONE
+        description: Contact phone number for the order
+      - name: RETURNED_DATE
+        description: Date the order was returned, if applicable
+      - name: SESSION_ID
+        description: Session identifier during which the order was made
+        tests:
+          - not_null
+      - name: SHIPPING_ADDRESS
+        description: Shipping address for the order
+        tests:
+          - not_null
+      - name: SHIPPING_COST
+        description: Cost of shipping for the order
+        tests:
+          - not_null
+      - name: STATE_NAME
+        description: Name of the state associated with the order
+        tests:
+          - not_null
+      - name: TAX_RATE
+        description: Tax rate applied to the order
+        tests:
+          - not_null
+      - name: TOTAL_PRICE
+        description: Total price of the order including items, tax, and shipping
+        tests:
+          - not_null
+      - name: TOTAL_QUANTITY
+        description: Total quantity of items ordered
+        tests:
+          - not_null
   
   - name: daily_finance
     description: Daily financial metrics including revenue, expenses, and profit
@@ -237,9 +300,9 @@ models:
       - name: SHIPPING_COST
         description: Cost of shipping daily
       - name: TAX
-        description: Total tax expenses daily
+        description: Total tax daily
       - name: TOTAL_COST
-        description: Total expenses incurred daily
+        description: Total expenses incurred per day (excluding taxes and shopping costs)
       - name: PROFIT
         description: Net profit earned daily
 
