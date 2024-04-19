@@ -185,31 +185,63 @@ models:
     columns:
       - name: ORDER_ID
         description: An identifier for each order
-        
+        tests:
+          - not_null
       - name: CLIENT_ID
         description: Identifier for the client placing the order
-        
+        tests:
+          - not_null
       - name: ITEM_NAME
         description: Name of the item
-        
+        tests:
+          - not_null
       - name: ADD_TO_CART_QUANTITY
         description: Quantity added to the cart
-        
       - name: REMOVE_FROM_CART_QUANTITY
         description: Quantity removed from the cart
-        
       - name: ITEM_PURCHASED
         description: Net quantity of items purchased
-        
       - name: ORDER_AT_TS
         description: Order timestamp in NTZ format
-        
       - name: PRICE_PER_UNIT
         description: Unit price of the item
-        
       - name: SESSION_ID
         description: Identifier for the shopping session
-        
+        tests:
+          - not_null
       - name: TOTAL_PRICE
         description: Total cost of purchased items
+  
+  - name: daily_finance
+    description: Daily financial metrics including revenue, expenses, and profit
+    columns:
+      - name: FINANCE_DATE
+        description: Date of daily financial record
+        tests:
+          - unique
+          - not_null
+      - name: REVENUE
+        description: Total revenue generated daily
+      - name: TECH_TOOL_EXPENSE
+        description: Expense on technical tools daily
+      - name: HR_EXPENSE
+        description: Expense on human resources daily
+      - name: WAREHOUSE_EXPENSE
+        description: Expense on warehouse operations daily
+      - name: OTHER_EXPENSE
+        description: Other miscellaneous expenses daily
+      - name: REFUND_COST
+        description: Cost of refunds issued daily
+      - name: SALARY
+        description: Total salary expense daily
+      - name: SHIPPING_COST
+        description: Cost of shipping daily
+      - name: TAX
+        description: Total tax expenses daily
+      - name: TOTAL_COST
+        description: Total expenses incurred daily
+      - name: PROFIT
+        description: Net profit earned daily
+
+
 
