@@ -9,17 +9,8 @@ models:
         tests:
           - unique
           - not_null
-      - name: session_id
-        description: Unique identifier for the session.
-        tests:
-          - unique
-          - not_null
       - name: client_name
         description: Anonymized name of the client.
-        tests:
-          - not_null
-      - name: session_at_ts
-        description: Timestamp when the session occurred.
         tests:
           - not_null
       - name: phone
@@ -93,6 +84,9 @@ models:
         description: The identifier of the client associated with this session
         tests:
           - not_null
+          - relationships:
+            to: ref('dim_client')
+            field: client_id
       - name: IP
         description: The IP address from which the session was initiated
       - name: OS
