@@ -85,8 +85,8 @@ models:
         tests:
           - not_null
           - relationships:
-            to: ref('dim_client')
-            field: client_id
+              to: ref('dim_client')
+              field: client_id
       - name: IP
         description: The IP address from which the session was initiated
       - name: OS
