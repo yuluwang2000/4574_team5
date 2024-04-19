@@ -6,6 +6,6 @@ WITH table1 AS(
     ON o.session_id = s.session_id
     ORDER BY 1,4
 )
-SELECT client_id, session_id, client_name, session_at_ts, phone, state_name, iso_code FROM table1
+SELECT client_id, client_name, phone, state_name, iso_code FROM table1
 WHERE rn = 1
 ORDER by client_id
