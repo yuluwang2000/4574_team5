@@ -15,6 +15,7 @@ SELECT
     o.PHONE, 
     o.SHIPPING_ADDRESS, 
     o.STATE_NAME, 
+    o.ISO_CODE,
     o.TAX_RATE
 FROM 
     {{ ref('base_snowflake__orders') }} o
